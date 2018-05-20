@@ -1,5 +1,7 @@
 package Cliente;
 
+import java.util.ArrayList;
+
 /**
  * Created by jim on 4/21/17.
  */

@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jim on 4/21/17.
@@ -19,6 +21,22 @@ public class ChatClient {
 
     private ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
     private ArrayList<MessageListener> messageListeners = new ArrayList<>();
+    
+    private Map<String, ArrayList<String>> historico;
+    
+    /**
+     * @return the historico
+     */
+    public Map<String, ArrayList<String>> getHistorico() {
+        return historico;
+    }
+
+    /**
+     * @param historico the historico to set
+     */
+    public void setHistorico(Map<String, ArrayList<String>> historico) {
+        this.historico = historico;
+    }
 
     public ChatClient(String serverName, int serverPort) {
         this.serverName = serverName;
@@ -39,12 +57,13 @@ public class ChatClient {
             }
         });
 
-        client.addMessageListener(new MessageListener() {
+        /*client.addMessageListener(new MessageListener() {
             @Override
             public void onMessage(String fromLogin, String msgBody) {
                 System.out.println("You got a message from " + fromLogin + " ===>" + msgBody);
             }
-        });
+            
+        });*/
 
         if (!client.connect()) {
             System.err.println("Connect failed.");
@@ -101,6 +120,7 @@ public class ChatClient {
     private void readMessageLoop() {
         try {
             String line;
+            historico = new HashMap<>();
             while ((line = bufferedIn.readLine()) != null) {
                 String[] tokens = StringUtils.split(line);
                 if (tokens != null && tokens.length > 0) {
@@ -111,6 +131,7 @@ public class ChatClient {
                         handleOffline(tokens);
                     } else if ("msg".equalsIgnoreCase(cmd)) {
                         String[] tokensMsg = StringUtils.split(line, null, 3);
+                        loadHistory(tokensMsg);
                         handleMessage(tokensMsg);
                     }
                 }
@@ -180,6 +201,31 @@ public class ChatClient {
 
     private OutputStream getOutputStream() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void loadHistory(String[] tokensMsg) {
+            String login;
+            if(tokensMsg.length == 4){
+                login = tokensMsg[3];
+            }
+            else{
+                login = tokensMsg[1];
+            }
+            if(historico.containsKey(login)){
+                ArrayList<String> array = null;
+                for(String s : historico.keySet()){
+                    if (s.equals(login)){
+                        array = historico.get(s);
+                    }
+                }
+                array.add(tokensMsg[1] + ": " + tokensMsg[2]);
+                historico.put(tokensMsg[1], array);
+            }
+            else{
+                ArrayList<String> array = new ArrayList<String>();
+                array.add(tokensMsg[1] + ": " + tokensMsg[2]);
+                historico.put(tokensMsg[1], array);
+            }
     }
 
 }
