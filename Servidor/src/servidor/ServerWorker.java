@@ -4,6 +4,7 @@ import Servidor.Server;
 import org.apache.commons.lang3.StringUtils;
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,8 @@ public class ServerWorker extends Thread {
     public void run() {
         try {
             handleClientSocket();
+        } catch (SocketException e) {
+            System.out.println("User logged off in succesfully: " + login); 
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
