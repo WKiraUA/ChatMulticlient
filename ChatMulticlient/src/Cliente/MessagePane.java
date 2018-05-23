@@ -2,17 +2,13 @@ package Cliente;
 
 import javax.swing.*;
 import java.awt.*;
-import static java.awt.SystemColor.text;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-/**
- * Created by jim on 4/21/17.
- */
+
+
 public class MessagePane extends JPanel implements MessageListener {
 
     private final ChatClient client;
@@ -34,7 +30,9 @@ public class MessagePane extends JPanel implements MessageListener {
         if(!(client.getHistorico() == null)){
             ArrayList<String> array = null;
             for(String s : client.getHistorico().keySet()){
-                array = client.getHistorico().get(s);
+                if(login.equals(s)){
+                    array = client.getHistorico().get(s);
+                }
             }
             if(!(array == null)){
                 array.forEach((s) -> {

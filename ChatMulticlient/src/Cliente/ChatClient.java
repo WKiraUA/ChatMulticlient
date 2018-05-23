@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by jim on 4/21/17.
- */
 public class ChatClient {
+
     private final String serverName;
     private final int serverPort;
     private Socket socket;
+    private String login;
     private InputStream serverIn;
     private OutputStream serverOut;
     private BufferedReader bufferedIn;
@@ -37,49 +36,24 @@ public class ChatClient {
     public void setHistorico(Map<String, ArrayList<String>> historico) {
         this.historico = historico;
     }
+    
+    /**
+     * @return the login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * @param login the login to set
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
     public ChatClient(String serverName, int serverPort) {
         this.serverName = serverName;
         this.serverPort = serverPort;
-    }
-
-    public static void main(String[] args) throws IOException {
-        ChatClient client = new ChatClient("localhost", 8818);
-        client.addUserStatusListener(new UserStatusListener() {
-            @Override
-            public void online(String login) {
-                System.out.println("ONLINE: " + login);
-            }
-
-            @Override
-            public void offline(String login) {
-                System.out.println("OFFLINE: " + login);
-            }
-        });
-
-        /*client.addMessageListener(new MessageListener() {
-            @Override
-            public void onMessage(String fromLogin, String msgBody) {
-                System.out.println("You got a message from " + fromLogin + " ===>" + msgBody);
-            }
-            
-        });*/
-
-        if (!client.connect()) {
-            System.err.println("Connect failed.");
-        } else {
-            System.out.println("Connect successful");
-
-            if (client.login("guest")) {
-                System.out.println("Login successful");
-
-                client.msg("jim", "Hello World!");
-            } else {
-                System.err.println("Login failed");
-            }
-
-            //client.logoff();
-        }
     }
 
     public void msg(String sendTo, String msgBody) throws IOException {
@@ -89,6 +63,7 @@ public class ChatClient {
 
     public boolean login(String login) throws IOException {
         String cmd = "login " + login +"\n";
+        this.setLogin(login);
         serverOut.write(cmd.getBytes());
 
         String response = bufferedIn.readLine();
@@ -197,10 +172,6 @@ public class ChatClient {
 
     public void removeMessageListener(MessageListener listener) {
         messageListeners.remove(listener);
-    }
-
-    private OutputStream getOutputStream() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void loadHistory(String[] tokensMsg) {

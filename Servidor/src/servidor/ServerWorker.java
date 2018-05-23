@@ -1,17 +1,12 @@
 package Servidor;
 
-import Servidor.Server;
 import org.apache.commons.lang3.StringUtils;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-/**
- * Created by jim on 4/18/17.
- */
 public class ServerWorker extends Thread {
 
     private final Socket clientSocket;
@@ -88,8 +83,6 @@ public class ServerWorker extends Thread {
         }
     }
 
-    // format: "msg" "login" body...
-    // format: "msg" "#topic" body...
     private void handleMessage(String[] tokens) throws IOException {
         String sendTo = tokens[1];
         String body = tokens[2];
@@ -116,7 +109,6 @@ public class ServerWorker extends Thread {
         server.removeWorker(this);
         List<ServerWorker> workerList = server.getWorkerList();
 
-        // send other online users current user's status
         String onlineMsg = "offline " + login + "\n";
         for(ServerWorker worker : workerList) {
             if (!login.equals(worker.getLogin())) {
@@ -141,7 +133,6 @@ public class ServerWorker extends Thread {
 
                 List<ServerWorker> workerList = server.getWorkerList();
 
-                // send current user all other online logins
                 for(ServerWorker worker : workerList) {
                     if (worker.getLogin() != null) {
                         if (!login.equals(worker.getLogin())) {
@@ -151,7 +142,6 @@ public class ServerWorker extends Thread {
                     }
                 }
 
-                // send other online users current user's status
                 String onlineMsg = "online " + login + "\n";
                 for(ServerWorker worker : workerList) {
                     if (!login.equals(worker.getLogin())) {

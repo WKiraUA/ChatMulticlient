@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-/**
- * Created by jim on 4/24/17.
- */
+
+
+
 public class LoginWindow extends JFrame {
     private final ChatClient client;
     JTextField loginField = new JTextField();
@@ -50,7 +50,6 @@ public class LoginWindow extends JFrame {
         String login = loginField.getText();
 
         if (client.login(login)) {
-            // bring up the user list window
             UserListPane userListPane = new UserListPane(client);
             JFrame frame = new JFrame("User List");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,7 +60,6 @@ public class LoginWindow extends JFrame {
             
             setVisible(false);
         } else {
-            // show error message
             JOptionPane.showMessageDialog(this, "Invalid login.");
         }
     }

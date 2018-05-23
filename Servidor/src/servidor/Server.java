@@ -1,17 +1,12 @@
 package Servidor;
 
-import Servidor.ServerWorker;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Properties;
 
-/**
- * Created by jim on 4/19/17.
- */
+
 public class Server extends Thread {
     private final int serverPort;
     private ArrayList<ServerWorker> workerList = new ArrayList<>();

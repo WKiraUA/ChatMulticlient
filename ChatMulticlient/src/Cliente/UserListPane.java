@@ -4,14 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import static javax.swing.JComponent.TOOL_TIP_TEXT_KEY;
 
-/**
- * Created by jim on 4/21/17.
- */
 public class UserListPane extends JPanel implements UserStatusListener {
 
 
@@ -47,26 +40,6 @@ public class UserListPane extends JPanel implements UserStatusListener {
                 }
             }
         });
-    }
-
-    public static void main(String[] args) {
-        ChatClient client = new ChatClient("localhost", 8818);
-
-        UserListPane userListPane = new UserListPane(client);
-        JFrame frame = new JFrame("User List");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 600);
-
-        frame.getContentPane().add(userListPane, BorderLayout.CENTER);
-        frame.setVisible(true);
-
-        if (client.connect()) {
-            try {
-                client.login("guest");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
