@@ -1,4 +1,5 @@
 # ChatMulticlient
+#Autor do Código Base: Jim Liao (http://fullstackmastery.com/2017/04/19/java-networking-multi-user-chat-clientserver-application-part-1/)
 Código Realizado para a tarefa da disciplina de Redes de Computadores II - Grupo 8
 
 Integrantes:
